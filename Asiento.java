@@ -1,31 +1,34 @@
-package Logica;
+package Clases_Mundo;
+
 
 /**
  *
- * @author Alexandra Tinjacá
+ * @author Alexandra Tinjaca
  */
 public class Asiento {
-    private int numeroFila;
-    private int numeroColumna;
+    private final int numeroFila;
+    private final int numeroColumna;
+    private static int contadorAsientos = 1;
     private Pasajero pasajero;
-    private int preferencia;
 
-    public Asiento(int numeroFila, int numeroColumna, int preferencia) {
+    public Asiento(int numeroFila, int numeroColumna) {
         this.numeroFila = numeroFila;
         this.numeroColumna = numeroColumna;
-        this.preferencia = preferencia;
+    }
+    public String getNumeroAsiento(Vuelo vuelo) {
+        if(contadorAsientos>=51)
+            Asiento.contadorAsientos = 1;
+        return String.valueOf(contadorAsientos++);
+    }
+    public int getPasajeroCedula() {
+        return (pasajero != null) ? pasajero.getCedula() : -1; // Retorna -1 si el asiento está desocupado
+    }
+    public String getNombrePasajero(){
+        return pasajero.getNombre();
     }
 
-    public int getNumeroFila() {
-        return numeroFila;
-    }
-
-    public int getNumeroColumna() {
-        return numeroColumna;
-    }
-
-    public Pasajero getPasajero() {
-        return pasajero;
+    public boolean estaOcupado() {
+        return pasajero != null;
     }
 
     public void asignarPasajero(Pasajero pasajero) {
@@ -34,18 +37,5 @@ public class Asiento {
 
     public void desocupar() {
         this.pasajero = null;
-    }
-
-    public boolean estaOcupado() {
-        return pasajero != null;
-    }
-
-    public int getPreferencia() {
-        return preferencia;
-    }
-
-    @Override
-    public String toString() {
-        return "(" + numeroFila + "-" + numeroColumna + ")";
     }
 }
