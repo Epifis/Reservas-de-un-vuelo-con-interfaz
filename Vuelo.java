@@ -1,69 +1,93 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-package Clases_Mundo;
+package Logica;
 
 /**
  *
  * @author Kotaro
  */
-public class Vuelo {
-    public static final int COLUMNAS = 11;  // Ajusta el valor según tus necesidades
-    private final Asiento[][] matrizAsientos;
 
-    public Vuelo(int filas, int columnas) {
-    matrizAsientos = new Asiento[filas][columnas];
-    
-    for (int i = 0; i < filas; i++) {
-        for (int j = 0; j < columnas; j++) {
-            matrizAsientos[i][j] = new Asiento(i + 1, j + 1);
+public class Vuelo {
+    private final Asiento[][] matrizAsientosEjecutivos;
+    private final Asiento[][] matrizAsientosEconomicos;
+
+    public Vuelo() {
+        matrizAsientosEjecutivos = new Asiento[4][2];
+        matrizAsientosEconomicos = new Asiento[6][7];
+
+        inicializarAsientos(matrizAsientosEjecutivos);
+        inicializarAsientos(matrizAsientosEconomicos);
+    }
+
+    private void inicializarAsientos(Asiento[][] matriz) {
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                matriz[i][j] = new Asiento(i + 1, j + 1, ' '); // ' ' representa ninguna preferencia específica
             }
         }
     }
 
     public void mostrarAsientos() {
-        for (Asiento[] matrizAsiento : matrizAsientos) {
-            for (int j = 0; j < matrizAsientos[0].length; j++) {
-                System.out.print(matrizAsiento[j].toString() + " ");
+        System.out.println("Asientos Ejecutivos:");
+        mostrarAsientos(matrizAsientosEjecutivos);
+        System.out.println("Asientos Económicos:");
+        mostrarAsientos(matrizAsientosEconomicos);
+    }
+
+    private void mostrarAsientos(Asiento[][] matriz) {
+        for (Asiento[] fila : matriz) {
+            for (Asiento asiento : fila) {
+                System.out.print(asiento + " ");
             }
             System.out.println();
         }
     }
 
-    public Asiento obtenerAsiento(int fila, int columna) {
-        return matrizAsientos[fila - 1][columna - 1];
-    }
-    
-     public int getFilas() {
-        return matrizAsientos.length;
+    public Asiento asignarAsientoEjecutivo(Pasajero pasajero, int preferencia) {
+        return asignarAsiento(matrizAsientosEjecutivos, pasajero, preferencia);
     }
 
-    public int getColumnas() {
-        return matrizAsientos[0].length;
+    public Asiento asignarAsientoEconomico(Pasajero pasajero, int preferencia) {
+        
+        return asignarAsiento(matrizAsientosEconomicos, pasajero, preferencia);
     }
-    public double porcentajeDeOcupacion() {
-        int asientosTotales = 0;
+
+    private Asiento asignarAsiento(Asiento[][] matriz, Pasajero pasajero, int preferencia) {
+    int filas = matriz.length;
+    int columnas = matriz[0].length;
+
+    for (int i = 0; i < filas; i++) {
+        for (int j = 0; j < columnas; j++) {
+            Asiento asiento = matriz[i][j];
+
+            if (!asiento.estaOcupado() && asiento.getPreferencia() == preferencia) {
+                asiento.asignarPasajero(pasajero);
+                return asiento;  // Devuelve el asiento asignado
+            }
+        }
+    }
+
+    return null; // Devolver null si no hay asientos disponibles con la preferencia especificada.
+}
+
+
+
+    public double porcentajeDeOcupacion(boolean esEjecutivo) {
+        Asiento[][] matriz = esEjecutivo ? matrizAsientosEjecutivos : matrizAsientosEconomicos;
+        int asientosTotales = matriz.length * matriz[0].length;
         int asientosOcupados = 0;
 
-        for (Asiento[] matrizAsiento : matrizAsientos) {
-            for (int j = 0; j < matrizAsientos[0].length; j++) {
-                if (matrizAsiento[j] != null) {
-                    asientosTotales++;
-                    if (matrizAsiento[j].estaOcupado()) {
-                        asientosOcupados++;
-                    }
+        for (Asiento[] fila : matriz) {
+            for (Asiento asiento : fila) {
+                if (asiento.estaOcupado()) {
+                    asientosOcupados++;
                 }
             }
         }
 
         if (asientosTotales == 0) {
-            return 0.0; // Evitar división por cero
+            return 0.0;
         }
 
-        double porcentajedeocupacion = ((double) asientosOcupados / asientosTotales) * 100.0;
-        return porcentajedeocupacion;
+        return ((double) asientosOcupados / asientosTotales) * 100.0;
     }
-
-
 }
+
