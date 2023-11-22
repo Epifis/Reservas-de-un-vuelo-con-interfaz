@@ -1,28 +1,31 @@
-package Clases_Mundo;
-
+package Logica;
 
 /**
  *
- * @author Kotaro
+ * @author Alexandra Tinjacá
  */
 public class Asiento {
-    private final int numeroFila;
-    private final int numeroColumna;
+    private int numeroFila;
+    private int numeroColumna;
     private Pasajero pasajero;
+    private int preferencia;
 
-    public Asiento(int numeroFila, int numeroColumna) {
+    public Asiento(int numeroFila, int numeroColumna, int preferencia) {
         this.numeroFila = numeroFila;
         this.numeroColumna = numeroColumna;
+        this.preferencia = preferencia;
     }
 
-    public String getNumeroAsiento() {
-        // Calcular el número de asiento en función de la fila y la columna
-        
-        return String.valueOf((numeroFila - 1) * Vuelo.COLUMNAS + (numeroColumna - 1));
+    public int getNumeroFila() {
+        return numeroFila;
     }
-    
-    public boolean estaOcupado() {
-        return pasajero != null;
+
+    public int getNumeroColumna() {
+        return numeroColumna;
+    }
+
+    public Pasajero getPasajero() {
+        return pasajero;
     }
 
     public void asignarPasajero(Pasajero pasajero) {
@@ -33,14 +36,16 @@ public class Asiento {
         this.pasajero = null;
     }
 
+    public boolean estaOcupado() {
+        return pasajero != null;
+    }
+
+    public int getPreferencia() {
+        return preferencia;
+    }
+
     @Override
     public String toString() {
-        if (estaOcupado()) {
-            return Asiento.this.getNumeroAsiento() + "Ocupado";
-        } else {
-            return Asiento.this.getNumeroAsiento();
-        }
-
+        return "(" + numeroFila + "-" + numeroColumna + ")";
     }
 }
-
