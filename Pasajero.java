@@ -1,10 +1,14 @@
-package Logica;
+package Clases_Mundo;
 
+/**
+ *
+ * @author Alexandra Tinjacá
+ */
 public class Pasajero {
-    private String nombre;
-    private String cedula;
+    private final String nombre;
+    private final int cedula;
 
-    public Pasajero(String nombre, String cedula) {
+    public Pasajero(String nombre, int cedula) {
         this.nombre = nombre;
         this.cedula = cedula;
     }
@@ -13,7 +17,14 @@ public class Pasajero {
         return nombre;
     }
 
-    public String getCedula() {
+    public int getCedula() {
         return cedula;
     }
+
+    
+    @Override
+    public String toString() {
+        return nombre + " (" + cedula + ")";
+    }
 }
+
