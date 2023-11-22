@@ -2,7 +2,7 @@ package Logica;
 
 /**
  *
- * @author Kotaro
+ * @author Alexandra Tinjacá
  */
 
 public class Vuelo {
