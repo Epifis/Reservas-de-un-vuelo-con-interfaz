@@ -66,8 +66,6 @@ public final Color colorFondo=new Color(121, 163, 232);
         panelesJuntos.setLayout(boxlayout); 
         
         add(panelesJuntos);
-        //add(panelEjecutivos, BorderLayout.NORTH);
-        //add(panelEconomicos, BorderLayout.CENTER);
 
         agregarBotones();
         actualizarAsientos();
@@ -228,6 +226,7 @@ private void asignarAsientoEconomico(String nombre, int cedula, int preferencia)
         default -> {
         }
     }
+    actualizarAsientos();
 }
 
 private void asignarAsientoVentana(Vuelo vuelo, String nombre, int cedula) {
@@ -402,10 +401,11 @@ private void asignarAsientoPasillo(Vuelo vuelo, String nombre, int cedula) {
 private void buscarAsientoEnVuelo(Vuelo vuelo, int numeroAsiento, String tipoVuelo) {
     for (int i = 0; i < vuelo.getFilas(); i++) {
         for (int j = 0; j < vuelo.getColumnas(); j++) {
-            Asiento asiento = vuelo.obtenerAsiento(i + 1, j + 1);
+            Asiento asiento;
+            asiento = vuelo.obtenerAsiento(i+1, j+1);
             if (asiento.getNumeroAsiento(vuelo).equals(String.valueOf(numeroAsiento))) {
                 if (asiento.estaOcupado()) {
-                    JOptionPane.showMessageDialog(this, "El asiento " + numeroAsiento + " del vuelo " + tipoVuelo + " está ocupado.");
+                    JOptionPane.showMessageDialog(this, "El asiento " + numeroAsiento + " del vuelo " + tipoVuelo + " está ocupado por " + asiento.getNombrePasajero());
                 } else {
                     JOptionPane.showMessageDialog(this, "El asiento " + numeroAsiento + " del vuelo " + tipoVuelo + " no está ocupado.");
                 }
